@@ -10,10 +10,10 @@ public class RecentCralwer {
         TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
         TweetsListener listener = new TweetsListener();
         twitterStream.addListener(listener);
-        FilterQuery fq = new FilterQuery();
-        String[] lang = { "en" };
-        fq.language(lang);
-        twitterStream.filter(fq);
+//        FilterQuery fq = new FilterQuery();
+//        String[] lang = { "en" };
+//        fq.language(lang);
+        twitterStream.sample();
     }
 }
 
