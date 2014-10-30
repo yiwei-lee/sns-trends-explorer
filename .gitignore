@@ -1,20 +1,22 @@
 *.properties
 
 # Package Files #
+
 #*.jar
 *.war
 *.ear
 
 #Intellj files#
+
+/.idea/
+/out/
 *.iml
-.idea/
-out/
 
 #Eclipse files#
-*.DS_Store
-bin/
+
+/bin/
+/result/
 .classpath
 .project
-
-result/
+*.DS_Store
 test.java
