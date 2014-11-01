@@ -1,22 +1,36 @@
 *.properties
 
-# Package Files #
+###############
+# Package Files
+###############
 
 #*.jar
 *.war
 *.ear
 
-#Intellj files#
+###############
+# Intellj files
+###############
 
 /.idea/
 /out/
 *.iml
 
-#Eclipse files#
+###############
+# Eclipse files
+###############
 
 /bin/
+/dist/
 /result/
+/.settings/
 .classpath
 .project
 *.DS_Store
 test.java
+
+##################
+# Yiwei Li
+##################
+ivy.xml
+build.xml
