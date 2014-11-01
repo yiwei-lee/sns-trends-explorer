@@ -1,2 +1,2 @@
-sns-trends-explorer
+SNS Trends Explorer
 ===================
