@@ -17,11 +17,13 @@ public class Feed {
   final String language;
   final String copyright;
   final String pubDate;
+  final String url;
 
   final List<FeedMessage> entries = new ArrayList<FeedMessage>();
 
-  public Feed(String title, String link, String description, String language,
+  public Feed(String url, String title, String link, String description, String language,
               String copyright, String pubDate) {
+    this.url = url;
     this.title = title;
     this.link = link;
     this.description = description;

@@ -65,7 +65,7 @@ public class RSSFeedParser {
             case ITEM:
               if (isFeedHeader) {
                 isFeedHeader = false;
-                feed = new Feed(title, link, description, language,
+                feed = new Feed(url.toString(), title, link, description, language,
                         copyright, pubdate);
               }
               event = eventReader.nextEvent();
