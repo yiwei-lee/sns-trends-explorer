@@ -34,3 +34,4 @@ test.java
 ##################
 ivy.xml
 build.xml
+/conf/
