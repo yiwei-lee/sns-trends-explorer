@@ -1,7 +1,10 @@
 package edu.nyu.stex.data.format;
 
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import twitter4j.HashtagEntity;
 import twitter4j.Status;
 
 import com.google.gson.Gson;
@@ -17,15 +20,20 @@ public class TwitterFormatter {
 
   public static byte[] toByte(Status status) {
     Data data = fromStatus(status);
-    return gson.toJson(data).getBytes();
+    try {
+      return gson.toJson(data).getBytes("UTF-8");
+    } catch (UnsupportedEncodingException e) {
+      return new byte[0];
+    }
   }
 
   public static Data fromStatus(Status status) {
     Data data = new Data();
+    // Populate data fields;
     data.setSource("twitter");
     data.setPublisher(status.getUser().getName());
     data.setTime(status.getCreatedAt());
-    data.setContent(StandardStemming.stem(status.getText()));
+
     HashMap<String, String> properties = new HashMap<String, String>();
     properties.put("favourite-count",
         Integer.toString(status.getFavoriteCount()));
@@ -34,6 +42,19 @@ public class TwitterFormatter {
         Double.toString(status.getGeoLocation().getLatitude()));
     properties.put("longitude",
         Double.toString(status.getGeoLocation().getLongitude()));
+    data.setProperties(properties);
+
+    HashMap<String, ArrayList<String>> listProperties = new HashMap<String, ArrayList<String>>();
+    ArrayList<String> hashTags = new ArrayList<String>();
+    for (HashtagEntity tag : status.getHashtagEntities()) {
+      hashTags.add(tag.getText());
+    }
+    listProperties.put("hashtags", hashTags);
+    data.setListProperties(listProperties);
+    
+    String content = status.getText();
+    data.setRawContent(content);
+    data.setContent(StandardStemming.stem(content));
     return data;
   }
 

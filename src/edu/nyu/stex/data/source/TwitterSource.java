@@ -1,5 +1,8 @@
 package edu.nyu.stex.data.source;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.flume.Context;
 import org.apache.flume.Event;
 import org.apache.flume.EventDrivenSource;
@@ -59,9 +62,12 @@ public class TwitterSource extends AbstractSource implements EventDrivenSource,
   @Override
   public void start() {
     final ChannelProcessor channel = getChannelProcessor();
+    final Map<String, String> headers = new HashMap<String, String>();
+    
     StatusListener listener = new StatusListener() {
       public void onStatus(Status status) {
-        Event event = EventBuilder.withBody(TwitterFormatter.toByte(status));
+        headers.put("timestamp", String.valueOf(status.getCreatedAt().getTime()));
+        Event event = EventBuilder.withBody(TwitterFormatter.toByte(status), headers);
         channel.processEvent(event);
       }
 
