@@ -88,7 +88,6 @@ public class TwitterSource extends DataSource {
       public void onStallWarning(StallWarning warning) {
       }
     };
-
     stream.addListener(listener);
     if (keywords.length == 0) {
       stream.sample();

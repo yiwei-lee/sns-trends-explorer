@@ -1,0 +1,44 @@
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="sns-trends-explorer" default="run">
+	<property name="src" location="src" />
+	<property name="build" location="bin" />
+	<property name="dist" location="dist" />
+	<property name="lib" location="lib" />
+
+	<target name="resolve" description="--> retrieve dependencies with ivy">
+		<ivy:retrieve />
+	</target >
+
+	<target name="init" depends="resolve">
+		<!-- Create the time stamp -->
+		<tstamp />
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build}" />
+	</target>
+
+	<target name="compile" depends="init" description="compile the source ">
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac srcdir="${src}" destdir="${build}" />
+	</target>
+
+	<target name="run" depends="dist" description="run the test">
+		<!-- Run the test class from ${build> -->
+		<java jar="${dist}/Stex.jar" fork="true" />
+	</target>
+
+	<target name="dist" depends="compile" description="generate the distribution">
+		<!-- Create the distribution directory -->
+		<mkdir dir="${dist}" />
+		<!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+		<jar jarfile="${dist}/SteX.jar" basedir="${build}">
+			<manifest>
+				<attribute name="Main-Class" value="edu.nyu.stex.TestDriver" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="clean" description="clean up">
+		<!-- Delete the ${build} and ${dist} directory trees -->
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
+	</target>
+</project >

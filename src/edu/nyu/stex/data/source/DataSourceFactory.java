@@ -26,8 +26,7 @@ public class DataSourceFactory {
         source = (DataSource) sourceClass.getConstructor().newInstance();
         source.configure(context);
       } else {
-        // Some thing is wrong!
-        logger.error("Class: " + sourceName + " is not supported.");
+        logger.error("Source name: " + sourceName + " is not supported.");
       }
     } catch (ClassNotFoundException e) {
       // TODO Auto-generated catch block
