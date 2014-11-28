@@ -6,6 +6,7 @@ import org.apache.flume.Context;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+@Deprecated
 public class DataSourceFactory {
   private final static Logger logger = LogManager
       .getLogger("data-source-factory");

@@ -1,7 +1,5 @@
 package edu.nyu.stex.data.source;
 
-import java.util.HashMap;
-
 import org.apache.flume.Context;
 import org.apache.flume.Event;
 import org.apache.flume.EventDrivenSource;
@@ -9,21 +7,19 @@ import org.apache.flume.channel.ChannelProcessor;
 import org.apache.flume.conf.Configurable;
 import org.apache.flume.event.EventBuilder;
 import org.apache.flume.source.AbstractSource;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import twitter4j.FilterQuery;
 import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
 import twitter4j.StatusListener;
-import twitter4j.TwitterObjectFactory;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 import twitter4j.conf.ConfigurationBuilder;
+import edu.nyu.stex.data.format.TwitterFormatter;
 
-public class TwitterSource extends AbstractSource implements
-EventDrivenSource, Configurable {
+public class TwitterSource extends AbstractSource implements EventDrivenSource,
+    Configurable {
   private TwitterStream stream;
 
   private String consumerKey;
@@ -33,14 +29,12 @@ EventDrivenSource, Configurable {
 
   private String[] keywords;
 
-  private final static Logger logger = LogManager.getLogger("twitter-source");
-
   @Override
   public void configure(Context context) {
-    consumerKey = context.getString("consumer-key");
-    consumerSecret = context.getString("consumer-secret");
-    accessToken = context.getString("access-token");
-    accessTokenSecret = context.getString("access-token-secret");
+    consumerKey = context.getString("consumerKey");
+    consumerSecret = context.getString("consumerSecret");
+    accessToken = context.getString("accessToken");
+    accessTokenSecret = context.getString("accessTokenSecret");
     String keywordString = context.getString("keyword", "");
 
     if (keywordString.trim().length() == 0) {
@@ -65,15 +59,9 @@ EventDrivenSource, Configurable {
   @Override
   public void start() {
     final ChannelProcessor channel = getChannelProcessor();
-    final HashMap<String, String> headers = new HashMap<String, String>();
     StatusListener listener = new StatusListener() {
       public void onStatus(Status status) {
-        logger
-            .debug(status.getUser().getScreenName() + ": " + status.getText());
-        headers.put("timestamp",
-            String.valueOf(status.getCreatedAt().getTime()));
-        Event event = EventBuilder.withBody(
-            TwitterObjectFactory.getRawJSON(status).getBytes(), headers);
+        Event event = EventBuilder.withBody(TwitterFormatter.toByte(status));
         channel.processEvent(event);
       }
 

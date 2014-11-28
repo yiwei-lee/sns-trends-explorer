@@ -7,6 +7,7 @@ import org.apache.flume.source.AbstractSource;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+@Deprecated
 public abstract class DataSource extends AbstractSource implements
     EventDrivenSource, Configurable {
 
