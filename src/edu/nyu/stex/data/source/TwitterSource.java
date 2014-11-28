@@ -4,8 +4,11 @@ import java.util.HashMap;
 
 import org.apache.flume.Context;
 import org.apache.flume.Event;
+import org.apache.flume.EventDrivenSource;
 import org.apache.flume.channel.ChannelProcessor;
+import org.apache.flume.conf.Configurable;
 import org.apache.flume.event.EventBuilder;
+import org.apache.flume.source.AbstractSource;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -19,7 +22,8 @@ import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
-public class TwitterSource extends DataSource {
+public class TwitterSource extends AbstractSource implements
+EventDrivenSource, Configurable {
   private TwitterStream stream;
 
   private String consumerKey;
