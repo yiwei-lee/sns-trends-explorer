@@ -110,7 +110,7 @@ public class RSSFeedParser {
         }
       }
     } catch (XMLStreamException e) {
-      throw new RuntimeException(e);
+      System.err.println(e.toString());
     }
     return feed;
   }
