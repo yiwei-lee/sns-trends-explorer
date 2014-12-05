@@ -3,6 +3,9 @@ package edu.nyu.stex.data.crawler.rss;
 /**
  * Created by tanis on 11/20/14.
  */
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -21,6 +24,7 @@ public class RSSFeedParser {
   static final String LANGUAGE = "language";
   static final String COPYRIGHT = "copyright";
   static final String LINK = "link";
+  static final String ALINK = "alink";
   static final String AUTHOR = "author";
   static final String ITEM = "item";
   static final String PUB_DATE = "pubDate";
@@ -54,13 +58,14 @@ public class RSSFeedParser {
       XMLInputFactory inputFactory = XMLInputFactory.newInstance();
       // Setup a new eventReader
       InputStream in = read();
+      if (in==null) return null;
       XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
       // read the XML document
       while (eventReader.hasNext()) {
         XMLEvent event = eventReader.nextEvent();
         if (event.isStartElement()) {
-          String localPart = event.asStartElement().getName()
-                  .getLocalPart();
+          String localPart = event.asStartElement().getName().getLocalPart();
+          String namespace = event.asStartElement().getName().getNamespaceURI();
           switch (localPart) {
             case ITEM:
               if (isFeedHeader) {
@@ -68,14 +73,17 @@ public class RSSFeedParser {
                 feed = new Feed(url.toString(), title, link, description, language,
                         copyright, pubdate);
               }
-              event = eventReader.nextEvent();
+//              event = eventReader.nextEvent();
               break;
             case TITLE:
               title = getCharacterData(event, eventReader);
               break;
             case DESCRIPTION:
-              description = getCharacterData(event, eventReader);
+              if (namespace.equals("")){
+                description = getCharacterData(event, eventReader);
+              }
               break;
+            case ALINK:
             case LINK:
               link = getCharacterData(event, eventReader);
               break;
@@ -103,6 +111,7 @@ public class RSSFeedParser {
             message.setGuid(guid);
             message.setLink(link);
             message.setTitle(title);
+            message.setPubDate(pubdate);
             feed.getMessages().add(message);
             event = eventReader.nextEvent();
             continue;
@@ -118,10 +127,12 @@ public class RSSFeedParser {
   private String getCharacterData(XMLEvent event, XMLEventReader eventReader)
           throws XMLStreamException {
     String result = "";
-    event = eventReader.nextEvent();
-    if (event instanceof Characters) {
-      result = event.asCharacters().getData();
-    }
+//    event = eventReader.nextEvent();
+//    if (event instanceof Characters) {
+//      result = event.asCharacters().getData();
+//    }
+    Document doc = Jsoup.parseBodyFragment(eventReader.getElementText());
+    result = doc.body().text();
     return result;
   }
 
@@ -129,7 +140,9 @@ public class RSSFeedParser {
     try {
       return url.openStream();
     } catch (IOException e) {
-      throw new RuntimeException(e);
+//      throw new RuntimeException(e);
+      System.err.println(e.toString());
+      return null;
     }
   }
 }

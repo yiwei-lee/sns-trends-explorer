@@ -1,9 +1,14 @@
 package edu.nyu.stex.data.crawler.rss;
 
+import com.google.gson.Gson;
+import edu.nyu.stex.data.Data;
+import edu.nyu.stex.data.crawler.Utility;
+import edu.nyu.stex.data.format.NewsFormatter;
+
 import java.io.*;
-import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by tanis on 11/20/14.
@@ -13,16 +18,27 @@ public class FeedGenerator extends TimerTask {
   public void run() {
     long start = System.currentTimeMillis();
     try {
+      Date date = Calendar.getInstance().getTime();
       long time = Calendar.getInstance().getTime().getTime();
-      String outputFilename = "result/feedMsg_"+time+".tsv";
+      String outputData = "data/data_"+time+".json";
+      String outputFeed = "feed/feedMsg_"+time+".json";
+      String urlSetPath = "urlSet.json";
+
       String inputPaths = "src/rss_sources";
       BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(new File(inputPaths))));
-
       String s;
-      StringBuilder sb = new StringBuilder();
+      StringBuilder feedSB = new StringBuilder();
+      StringBuilder dataSB = new StringBuilder();
+      Gson gson = new Gson();
       int msgCount = 0;
       int feedCount = 0;
       String source = "";
+
+      Set<String>  urlSet = gson.fromJson(new InputStreamReader(new FileInputStream(new File("result/"+urlSetPath))),Set.class);
+      if (urlSet == null) {
+        urlSet = new HashSet<String>();
+      }
+
 
       while ((s = in.readLine()) != null) {
         if (s.matches("\\#.*")) {
@@ -35,23 +51,69 @@ public class FeedGenerator extends TimerTask {
         Feed feed = parser.readFeed();
         if (feed == null){
           continue;
+        }else {
+          feed.setPublisher(source);
         }
         feedCount++;
-        System.out.println(feed);
         for (FeedMessage message : feed.getMessages()) {
-          sb.append(source).append('\t').append(message.title).append('\t').append(message.description).append('\n');
-//          System.out.println((++msgCount) + "\t" + source + "\t" + message.title + "\t" + message.description);
+          String url = message.link;
+          if (message.pubDate.equals("")||source.equals("Xinhua")){
+            DateFormat df = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
+            message.setPubDate(df.format(date));
+          }
+          if (urlSet.contains(url)){
+            continue;
+          }else {
+            urlSet.add(url);
+            Data entry = NewsFormatter.fromStatus(message,source);
+            dataSB.append(gson.toJson(entry)).append('\n');
+          }
+        }
+        String json = gson.toJson(feed);
+        feedSB.append(json).append('\n');
+
+        if (feedCount==100){
+          feedCount = 0;
+          Utility.WriteToFile(feedSB.substring(0,feedSB.length()-1), outputFeed, true);
+          feedSB.setLength(0);
+          System.out.println("Written in "+outputFeed);
+          if (dataSB.length()>0){
+            Utility.WriteToFile(dataSB.substring(0,dataSB.length()-1), outputData, true);
+            dataSB.setLength(0);
+            System.out.println("Written in "+outputData);
+          }
+//          File outputFile = new File(outputFeed);
+//          FileOutputStream fileOutputStream = new FileOutputStream(outputFile,true);
+//          fileOutputStream.write(feedSB.substring(0,feedSB.length()-1).getBytes());
+//          fileOutputStream.flush();
+//          fileOutputStream.close();
         }
       }
       System.out.println("Total "+feedCount+" feeds.");
       in.close();
 
-      File outputFile = new File(outputFilename);
-      FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
-      fileOutputStream.write(sb.substring(0,sb.length()-1).getBytes());
-      System.out.println("Written in "+outputFilename);
-      fileOutputStream.flush();
-      fileOutputStream.close();
+      Utility.WriteToFile(feedSB.substring(0,feedSB.length()-1), outputFeed, true);
+      if (dataSB.length()>0){
+        Utility.WriteToFile(dataSB.substring(0,dataSB.length()-1), outputData, true);
+        dataSB.setLength(0);
+        System.out.println("Written in "+outputData);
+      }
+
+//      File outputFile = new File(outputFeed);
+//      FileOutputStream fileOutputStream = new FileOutputStream(outputFile,true);
+//      fileOutputStream.write(feedSB.substring(0,feedSB.length()-1).getBytes());
+//      System.out.println("Written in "+outputFeed);
+//      fileOutputStream.flush();
+//      fileOutputStream.close();
+
+//      outputFile = new File(urlSetPath);
+//      fileOutputStream = new FileOutputStream(outputFile);
+//      fileOutputStream.write(gson.toJson(urlSet).getBytes());
+//      System.out.println("Update "+urlSetPath);
+//      fileOutputStream.flush();
+//      fileOutputStream.close();
+      Utility.WriteToFile(gson.toJson(urlSet), urlSetPath, false);
+
     }catch (Exception e){
       System.err.println(e.toString());
     }
@@ -78,7 +140,7 @@ class MainApplication {
     timer.schedule(
             new FeedGenerator(),
             date.getTime(),
-            1000 * 60 * 60 * 24 / 2
+            1000 * 60 * 60 * 1
     );
   }//Main method ends
 }//MainApplication ends
