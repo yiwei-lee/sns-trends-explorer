@@ -18,9 +18,9 @@ public class Utility {
             return false;
         }
         boolean result = false;
-        String filePath = "/Users/tanis/workspace/TopicAnalysis";
+        String filePath = RESULT_FOLDER_NAME;
         if (filePath != null && !filePath.isEmpty()) {
-            filePath += "/" + RESULT_FOLDER_NAME + "/" + fileName;
+            filePath += "/" + fileName;
             File file;
             FileOutputStream outputStream = null;
             try {
