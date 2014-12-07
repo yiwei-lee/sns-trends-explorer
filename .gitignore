@@ -23,6 +23,7 @@
 /bin/
 /dist/
 /result/
+/news/
 /.settings/
 .classpath
 .project
