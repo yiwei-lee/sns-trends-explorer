@@ -16,10 +16,10 @@ import java.util.*;
 public class FeedGenerator extends TimerTask {
   @Override
   public void run() {
+    Date date = Calendar.getInstance().getTime();
+    long time = Calendar.getInstance().getTime().getTime();
     long start = System.currentTimeMillis();
     try {
-      Date date = Calendar.getInstance().getTime();
-      long time = Calendar.getInstance().getTime().getTime();
       String outputData = "data/data_"+time+".json";
       String outputFeed = "feed/feedMsg_"+time+".json";
       String urlSetPath = "urlSet.json";
@@ -33,8 +33,9 @@ public class FeedGenerator extends TimerTask {
       int msgCount = 0;
       int feedCount = 0;
       String source = "";
+      int round = 0;
 
-      Set<String>  urlSet = gson.fromJson(new InputStreamReader(new FileInputStream(new File("result/"+urlSetPath))),Set.class);
+      Set<String>  urlSet = gson.fromJson(new InputStreamReader(new FileInputStream(new File("news/"+urlSetPath))),Set.class);
       if (urlSet == null) {
         urlSet = new HashSet<String>();
       }
@@ -73,23 +74,19 @@ public class FeedGenerator extends TimerTask {
         feedSB.append(json).append('\n');
 
         if (feedCount==100){
+          round ++;
           feedCount = 0;
-          Utility.WriteToFile(feedSB.substring(0,feedSB.length()-1), outputFeed, true);
+          Utility.WriteToFile(feedSB.toString(), outputFeed, true);
           feedSB.setLength(0);
           System.out.println("Written in "+outputFeed);
           if (dataSB.length()>0){
-            Utility.WriteToFile(dataSB.substring(0,dataSB.length()-1), outputData, true);
+            Utility.WriteToFile(dataSB.toString(), outputData, true);
             dataSB.setLength(0);
             System.out.println("Written in "+outputData);
           }
-//          File outputFile = new File(outputFeed);
-//          FileOutputStream fileOutputStream = new FileOutputStream(outputFile,true);
-//          fileOutputStream.write(feedSB.substring(0,feedSB.length()-1).getBytes());
-//          fileOutputStream.flush();
-//          fileOutputStream.close();
         }
       }
-      System.out.println("Total "+feedCount+" feeds.");
+      System.out.println("Total "+(round*100+feedCount)+" feeds.");
       in.close();
 
       Utility.WriteToFile(feedSB.substring(0,feedSB.length()-1), outputFeed, true);
@@ -99,19 +96,6 @@ public class FeedGenerator extends TimerTask {
         System.out.println("Written in "+outputData);
       }
 
-//      File outputFile = new File(outputFeed);
-//      FileOutputStream fileOutputStream = new FileOutputStream(outputFile,true);
-//      fileOutputStream.write(feedSB.substring(0,feedSB.length()-1).getBytes());
-//      System.out.println("Written in "+outputFeed);
-//      fileOutputStream.flush();
-//      fileOutputStream.close();
-
-//      outputFile = new File(urlSetPath);
-//      fileOutputStream = new FileOutputStream(outputFile);
-//      fileOutputStream.write(gson.toJson(urlSet).getBytes());
-//      System.out.println("Update "+urlSetPath);
-//      fileOutputStream.flush();
-//      fileOutputStream.close();
       Utility.WriteToFile(gson.toJson(urlSet), urlSetPath, false);
 
     }catch (Exception e){
@@ -120,6 +104,7 @@ public class FeedGenerator extends TimerTask {
     long elapsedTime = System.currentTimeMillis()-start;
     int min = (int)elapsedTime/(60*1000);
     int sec = (int)(elapsedTime-min*(60*1000))/1000;
+    System.out.println("Started crawling at: "+ date);
     System.out.println("Total time: "+min+" min "+sec+" sec.");
   }
 }
@@ -140,7 +125,7 @@ class MainApplication {
     timer.schedule(
             new FeedGenerator(),
             date.getTime(),
-            1000 * 60 * 60 * 1
+            1000 * 60 * 60 * 2
     );
   }//Main method ends
 }//MainApplication ends

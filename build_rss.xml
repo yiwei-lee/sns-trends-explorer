@@ -1,0 +1,33 @@
+<project>
+
+    <property name="src"    value="src"/>
+    <property name="build"  value="bin"/>
+    <property name="classes"    value="${build}/classes"/>
+    <property name="lib"    value="lib"/>
+
+    <property name="main-class" value="edu.nyu.stex.data.crawler.rss.MainApplication"/>
+
+    <path id="classpath">
+        <fileset dir="${lib}" includes="*.jar"/>
+    </path>
+
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${classes}"/>
+        <javac includeantruntime="false" srcdir="${src}" destdir="${classes}" classpathref="classpath"/>
+    </target>
+
+    <target name="run">
+        <java fork="true" classname="${main-class}" >
+            <classpath>
+                <pathelement path="${classes}" />
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+</project>
+

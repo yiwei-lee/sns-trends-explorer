@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Utility {
 
-    private static final String RESULT_FOLDER_NAME = "result";
+    private static final String RESULT_FOLDER_NAME = "news";
     private static boolean stream = false;
 
     public static boolean WriteToFile(String text, String fileName, boolean append) {
