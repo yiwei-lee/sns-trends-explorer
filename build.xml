@@ -4,11 +4,15 @@
 	<property name="dist" location="dist" />
 	<property name="lib" location="lib" />
 
+	<path id="classpath">
+		<fileset dir="${lib}" includes="*.jar"/>
+	</path>
+
 	<target name="resolve" description="--> retrieve dependencies with ivy">
 		<ivy:retrieve />
 	</target >
 
-	<target name="init" depends="resolve">
+	<target name="init">
 		<!-- Create the time stamp -->
 		<tstamp />
 		<!-- Create the build directory structure used by compile -->
@@ -17,12 +21,17 @@
 
 	<target name="compile" depends="init" description="compile the source ">
 		<!-- Compile the java code from ${src} into ${build} -->
-		<javac srcdir="${src}" destdir="${build}" />
+		<javac srcdir="${src}" destdir="${build}" classpathref="classpath"/>
 	</target>
 
 	<target name="run" depends="dist" description="run the test">
 		<!-- Run the test class from ${build> -->
-		<java jar="${dist}/Stex.jar" fork="true" />
+		<java fork="true" classname="edu.nyu.stex.TestDriver">
+			<classpath>
+				<path refid="classpath"/>
+				<path location="${dist}/SteX.jar"/>
+			</classpath>
+		</java>
 	</target>
 
 	<target name="dist" depends="compile" description="generate the distribution">
