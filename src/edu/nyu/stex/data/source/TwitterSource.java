@@ -16,11 +16,13 @@ import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
 import twitter4j.StatusListener;
+import twitter4j.TwitterObjectFactory;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 import twitter4j.conf.ConfigurationBuilder;
 import edu.nyu.stex.data.format.TwitterFormatter;
 
+@SuppressWarnings("unused")
 public class TwitterSource extends AbstractSource implements EventDrivenSource,
     Configurable {
   private TwitterStream stream;
@@ -67,7 +69,8 @@ public class TwitterSource extends AbstractSource implements EventDrivenSource,
     StatusListener listener = new StatusListener() {
       public void onStatus(Status status) {
         headers.put("timestamp", String.valueOf(status.getCreatedAt().getTime()));
-        Event event = EventBuilder.withBody(TwitterFormatter.toByte(status), headers);
+//        Event event = EventBuilder.withBody(TwitterFormatter.toByte(status), headers);
+        Event event = EventBuilder.withBody(TwitterObjectFactory.getRawJSON(status).getBytes(), headers);
         channel.processEvent(event);
       }
 
