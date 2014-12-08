@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Utility {
 
-    private static final String RESULT_FOLDER_NAME = "result";
+    private static final String RESULT_FOLDER_NAME = "news";
     private static boolean stream = false;
 
     public static boolean WriteToFile(String text, String fileName, boolean append) {
@@ -18,9 +18,9 @@ public class Utility {
             return false;
         }
         boolean result = false;
-        String filePath = "/Users/tanis/workspace/TopicAnalysis";
+        String filePath = RESULT_FOLDER_NAME;
         if (filePath != null && !filePath.isEmpty()) {
-            filePath += "/" + RESULT_FOLDER_NAME + "/" + fileName;
+            filePath += "/" + fileName;
             File file;
             FileOutputStream outputStream = null;
             try {

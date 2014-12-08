@@ -1,8 +1,11 @@
 package edu.nyu.stex.data;
 
+import edu.nyu.stex.data.preprocess.StandardStemming;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class Data {
   private String source;
@@ -70,5 +73,14 @@ public class Data {
 
   public void setRawContent(String rawContent) {
     this.rawContent = rawContent;
+  }
+
+  public void rawContentToContent() {
+    List<String> terms = StandardStemming.stemToList(rawContent);
+    StringBuilder sb = new StringBuilder();
+    for (String term:terms){
+      sb.append(term).append(" ");
+    }
+    setContent(sb.substring(0,sb.length()-1));
   }
 }

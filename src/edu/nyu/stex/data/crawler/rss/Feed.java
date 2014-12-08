@@ -18,6 +18,8 @@ public class Feed {
   final String copyright;
   final String pubDate;
   final String url;
+  private String publisher;
+
 
   final List<FeedMessage> entries = new ArrayList<FeedMessage>();
 
@@ -30,6 +32,14 @@ public class Feed {
     this.language = language;
     this.copyright = copyright;
     this.pubDate = pubDate;
+  }
+
+  public String getPublisher() {
+    return publisher;
+  }
+
+  public void setPublisher(String publisher) {
+    this.publisher = publisher;
   }
 
   public List<FeedMessage> getMessages() {

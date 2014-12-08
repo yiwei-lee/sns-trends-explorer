@@ -14,6 +14,16 @@ public class FeedMessage {
   String link;
   String author;
   String guid;
+  String pubDate;
+
+  public String getPubDate() {
+    return pubDate;
+  }
+
+  public void setPubDate(String pubDate) {
+    this.pubDate = pubDate;
+  }
+
 
   public String getTitle() {
     return title;
