@@ -11,6 +11,7 @@ import org.apache.flume.conf.Configurable;
 import org.apache.flume.event.EventBuilder;
 import org.apache.flume.source.AbstractSource;
 
+import twitter4j.TwitterObjectFactory;
 import twitter4j.FilterQuery;
 import twitter4j.StallWarning;
 import twitter4j.Status;
@@ -69,8 +70,13 @@ public class TwitterSource extends AbstractSource implements EventDrivenSource,
     StatusListener listener = new StatusListener() {
       public void onStatus(Status status) {
         headers.put("timestamp", String.valueOf(status.getCreatedAt().getTime()));
+<<<<<<< HEAD
+        //Event event = EventBuilder.withBody(TwitterFormatter.toByte(status), headers);
+	Event event = EventBuilder.withBody(TwitterObjectFactory.getRawJSON(status).getBytes(), headers);
+=======
 //        Event event = EventBuilder.withBody(TwitterFormatter.toByte(status), headers);
         Event event = EventBuilder.withBody(TwitterObjectFactory.getRawJSON(status).getBytes(), headers);
+>>>>>>> 6cd922ac776f78316e4f2f0ef26cb209b9c3aafd
         channel.processEvent(event);
       }
 
