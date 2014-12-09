@@ -5,14 +5,18 @@
 	<property name="lib" location="lib" />
 
 	<path id="classpath">
-		<fileset dir="${lib}" includes="*.jar"/>
+		<fileset dir="${lib}" includes="*.jar" />
 	</path>
 
+	<manifestclasspath property="lib.list" jarfile="dist/t2sf.jar">
+		<classpath refid="classpath" />
+	</manifestclasspath>
+
 	<target name="resolve" description="--> retrieve dependencies with ivy">
-		<ivy:retrieve />
+		<ivy:retrieve sync="true" />
 	</target >
 
-	<target name="init">
+	<target name="init" depends="resolve">
 		<!-- Create the time stamp -->
 		<tstamp />
 		<!-- Create the build directory structure used by compile -->
@@ -21,15 +25,15 @@
 
 	<target name="compile" depends="init" description="compile the source ">
 		<!-- Compile the java code from ${src} into ${build} -->
-		<javac srcdir="${src}" destdir="${build}" classpathref="classpath"/>
+		<javac srcdir="${src}" destdir="${build}" classpathref="classpath" />
 	</target>
 
 	<target name="run" depends="dist" description="run the test">
 		<!-- Run the test class from ${build> -->
 		<java fork="true" classname="edu.nyu.stex.TestDriver">
 			<classpath>
-				<path refid="classpath"/>
-				<path location="${dist}/SteX.jar"/>
+				<path refid="classpath" />
+				<path location="${dist}/SteX.jar" />
 			</classpath>
 		</java>
 	</target>
@@ -41,6 +45,7 @@
 		<jar jarfile="${dist}/SteX.jar" basedir="${build}">
 			<manifest>
 				<attribute name="Main-Class" value="edu.nyu.stex.TestDriver" />
+				<attribute name="Class-Path" value="${lib.list}" />
 			</manifest>
 		</jar>
 	</target>

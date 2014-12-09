@@ -10,6 +10,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 
 import scala.Tuple2;
 
+@SuppressWarnings("unused")
 public class SparkWordCountTest {
   public static void main(String[] args) {
     SparkConf conf = new SparkConf().setAppName("Spark Java Word Count")
@@ -17,13 +18,13 @@ public class SparkWordCountTest {
     JavaSparkContext ctx = new JavaSparkContext(conf);
     JavaRDD<String> lines = ctx
         .textFile("/user/yl2174/rdb_data/2014-11-29-twitter/FlumeData.1417284815867");
-    JavaRDD<String> words = lines
-        .flatMap(line -> Arrays.asList(line.split(" ")));
-    JavaPairRDD<String, Integer> counts = words.mapToPair(
-        w -> new Tuple2<String, Integer>(w, 1)).reduceByKey((x, y) -> x + y);
-    Map<String, Integer> result = counts.collectAsMap();
-    for (String word : result.keySet()) {
-      System.out.println(word + " : " + result.get(word));
-    }
+//    JavaRDD<String> words = lines
+//        .flatMap(line -> Arrays.asList(line.split(" ")));
+//    JavaPairRDD<String, Integer> counts = words.mapToPair(
+//        w -> new Tuple2<String, Integer>(w, 1)).reduceByKey((x, y) -> x + y);
+//    Map<String, Integer> result = counts.collectAsMap();
+//    for (String word : result.keySet()) {
+//      System.out.println(word + " : " + result.get(word));
+//    }
   }
 }

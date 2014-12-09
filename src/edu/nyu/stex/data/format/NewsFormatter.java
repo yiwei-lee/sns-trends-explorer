@@ -18,6 +18,7 @@ import edu.nyu.stex.data.crawler.rss.Feed;
 import edu.nyu.stex.data.crawler.rss.FeedMessage;
 import edu.nyu.stex.data.preprocess.StandardStemming;
 
+@SuppressWarnings("unused")
 public class NewsFormatter {
   private static final Gson gson = new GsonBuilder().create();
   private static final JsonParser parser = new JsonParser();
