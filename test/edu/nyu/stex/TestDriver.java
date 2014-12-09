@@ -7,7 +7,7 @@ import edu.nyu.stex.data.source.TwitterDataToSequenceFiles;
 public class TestDriver {
 
   public static void main(String[] args) throws IOException {
-    if (args.length != 1) {
+    if (args.length < 1) {
       System.err.println("Usage: Stex.jar cmd [args]");
       System.exit(1);
     }
