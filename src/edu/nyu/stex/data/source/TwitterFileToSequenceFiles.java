@@ -22,7 +22,7 @@ public class TwitterFileToSequenceFiles {
 
   public static void main(String[] args) throws IOException {
     inputPath = new Path(args[0]);
-    outputPath = new Path(args[0].replaceFirst("rdb_data", "rdb_sequence_data"));
+    outputPath = new Path(args[0].replaceFirst("rdb_data", "rdb_sequence_data")+"/sequence_data");
     conf = new Configuration();
     fs = FileSystem.get(
         URI.create("hdfs://babar.es.its.nyu.edu:8020/user/yl2174"), conf);
@@ -35,7 +35,7 @@ public class TwitterFileToSequenceFiles {
   private static void cd(FileStatus[] status) throws IOException {
     for (int i = 0; i < status.length; i++) {
       FileStatus fileStatus = status[i];
-      if (fileStatus.isDir()) {
+      if (fileStatus.isDirectory()) {
         cd(fs.listStatus(fileStatus.getPath()));
       } else {
         // Is a 512MB Twitter data file;

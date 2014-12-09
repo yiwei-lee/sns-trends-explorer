@@ -33,7 +33,7 @@
        <dependency org="org.apache.flume" name="flume-ng-core" rev="1.5.2"/>
        <dependency org="org.apache.flume" name="flume-ng-sdk" rev="1.5.2"/>
        <dependency org="org.apache.flume" name="flume-ng-embedded-agent" rev="1.5.2"/>
-       <dependency org="org.apache.hadoop" name="hadoop-core" rev="1.2.1"/>
+       <dependency org="org.apache.hadoop" name="hadoop-client" rev="2.6.0"/>
        <dependency org="org.apache.spark" name="spark-core_2.10" rev="1.1.0"/>
 	</dependencies>
 </ivy-module>
