@@ -3,6 +3,7 @@ package edu.nyu.stex.data.source;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
@@ -23,7 +24,8 @@ public class TwitterFileToSequenceFiles {
     inputPath = new Path(args[0]);
     outputPath = new Path(args[0].replaceFirst("rdb_data", "rdb_sequence_data"));
     conf = new Configuration();
-    fs = FileSystem.get(conf);
+    fs = FileSystem.get(
+        URI.create("hdfs://babar.es.its.nyu.edu:8020/user/yl2174"), conf);
     writer = new SequenceFile.Writer(fs, conf, outputPath, Text.class,
         Text.class);
     cd(fs.listStatus(inputPath));
