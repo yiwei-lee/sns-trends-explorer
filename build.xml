@@ -8,7 +8,7 @@
 		<fileset dir="${lib}" includes="*.jar" />
 	</path>
 
-	<manifestclasspath property="lib.list" jarfile="dist/t2sf.jar">
+	<manifestclasspath property="lib.list" jarfile="dist/SteX.jar">
 		<classpath refid="classpath" />
 	</manifestclasspath>
 
@@ -21,7 +21,10 @@
 
 	<target name="compile" depends="init" description="compile the source ">
 		<!-- Compile the java code from ${src} into ${build} -->
-		<javac srcdir="${src}" destdir="${build}" classpathref="classpath" />
+		<javac srcdir="${src}" destdir="${build}" classpathref="classpath">
+			<src path="${src}" />
+			<src path="test" />
+		</javac>
 	</target>
 
 	<target name="run" depends="dist" description="run the test">
