@@ -12,11 +12,7 @@
 		<classpath refid="classpath" />
 	</manifestclasspath>
 
-	<target name="resolve" description="--> retrieve dependencies with ivy">
-		<ivy:retrieve sync="true" />
-	</target >
-
-	<target name="init" depends="resolve">
+	<target name="init">
 		<!-- Create the time stamp -->
 		<tstamp />
 		<!-- Create the build directory structure used by compile -->
