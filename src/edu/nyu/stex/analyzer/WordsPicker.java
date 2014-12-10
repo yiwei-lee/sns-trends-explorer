@@ -1,5 +1,3 @@
-package edu.nyu.stex.analyzer;
-
 import java.io.IOException;
 import java.util.*;
 import java.io.File;
@@ -48,6 +46,7 @@ public class WordsPicker {
 				}
 				result.add(lineResult);
 			}
+			reader.close();
 		}catch(IOException e){
 			e.printStackTrace();
 		}
@@ -56,7 +55,10 @@ public class WordsPicker {
 
 	public static void main(String[] args) throws Exception, IOException
 	{
-//		Vector<Vector<String>> show = Picker("./test",5);
+	/******Uncomment any of the three part below to test module accordingly******/	
+		
+/******This part is to test the module of picking up N words with highest probability**********/		
+//		Vector<Vector<String>> show = Picker("data/p_term_topic.txt",10);
 //		for(int i=0;i<show.size();i++)
 //		{System.out.print(i+": ");
 //			for(int j = 0;j<(show.get(i)).size(); j++ )
@@ -65,10 +67,18 @@ public class WordsPicker {
 //			}
 //			System.out.println();
 //		}
-		Double[] show = ProbabilityAnalyzer.ProbabilitySum("./test");
-		for(int i = 0; i<show.length;i++)
-		{
-			System.out.println(show[i]);
-		}
+		ChartGenerator chart = new ChartGenerator("Probability Statistics of Topics", "data/doc_topics");
+		
+/*****This part is to test the module of calculating each topic's sum of probabilities************/	
+//		Double[] show = ProbabilityAnalyzer.ProbabilitySum("./test");
+//		for(int i = 0; i<show.length;i++)
+//		{
+//			System.out.println(show[i]);
+//		}
+
+/**********This part is to test the module of generating bar charts***************/
+//	    ChartGenerator chart = new ChartGenerator("Probability Statistics of Topics","./chartTest");
+//	    chart.pack();
+//	    chart.setVisible(true);
 	}
 }
