@@ -16,7 +16,7 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterObjectFactory;
 import edu.nyu.stex.data.preprocess.StandardStemming;
 
-public class TwitterDataToSequenceFiles {
+public class TwitterDataToSequenceFile {
   private static Path inputPath;
   private static Path outputPath;
   private static Configuration conf;
@@ -59,7 +59,9 @@ public class TwitterDataToSequenceFiles {
       String content = StandardStemming.stem(TwitterObjectFactory.createStatus(
           line).getText());
       if (!content.isEmpty()) {
-        writer.append(new Text(content + '.' + lineCount), new Text(line));
+        writer.append(
+            new Text(fileStatus.getPath().getName() + '.' + lineCount),
+            new Text(content));
       }
       lineCount++;
     }
