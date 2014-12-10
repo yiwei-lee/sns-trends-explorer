@@ -44,10 +44,11 @@ public class NewsDataToSequenceFile {
     String line;
     int lineCount = 0;
     while ((line = br.readLine()) != null) {
-      System.out.println(lineCount);
+//      System.out.println(lineCount);
       Gson gson = new Gson();
       Data data = gson.fromJson(line, Data.class);
-      String content = data.getContent();
+//      String content = data.getContent();
+      String content = data.getRawContent();
       if (!content.isEmpty()) {
         writer.append(new Text(String.valueOf(lineCount)), new Text(content));
       }
