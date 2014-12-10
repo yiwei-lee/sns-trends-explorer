@@ -1,6 +1,9 @@
 package edu.nyu.stex.data.source;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
@@ -9,29 +12,23 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.SequenceFile;
-import org.apache.hadoop.io.Text;
 
 import twitter4j.Status;
 import twitter4j.TwitterException;
 import twitter4j.TwitterObjectFactory;
 
-public class TwitterDataToSequenceFile {
+public class TwitterDataToMalletData {
   private static Path inputPath;
-  private static Path outputPath;
   private static Configuration conf;
   private static FileSystem fs;
-  private static SequenceFile.Writer writer;
+  private static BufferedWriter writer;
 
-  @SuppressWarnings("deprecation")
   public static void main(String[] args) throws IOException, TwitterException {
     inputPath = new Path(args[0]);
-    outputPath = new Path(args[0].replaceFirst("rdb_data", "rdb_sequence_data")
-        + "/sequence_data");
     conf = new Configuration();
     fs = FileSystem.get(URI.create("hdfs://babar.es.its.nyu.edu:8020"), conf);
-    writer = new SequenceFile.Writer(fs, conf, outputPath, Text.class,
-        Text.class);
+    BufferedWriter writer = new BufferedWriter(
+        new FileWriter(new File(args[1])));
     cd(fs.listStatus(inputPath));
     writer.close();
   }
@@ -57,9 +54,8 @@ public class TwitterDataToSequenceFile {
     while ((line = br.readLine()) != null) {
       Status status = TwitterObjectFactory.createStatus(line);
       if (status.getLang().equals("en")) {
-        writer.append(
-            new Text(fileStatus.getPath().getName() + '.' + lineCount),
-            new Text(status.getText()));
+        writer.write(fileStatus.getPath().getName() + '.' + lineCount + " X "
+            + status.getText());
       }
       lineCount++;
     }

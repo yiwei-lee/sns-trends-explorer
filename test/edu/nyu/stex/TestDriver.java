@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import twitter4j.TwitterException;
 import edu.nyu.stex.data.source.NewsDataToSequenceFile;
+import edu.nyu.stex.data.source.TwitterDataToMalletData;
 import edu.nyu.stex.data.source.TwitterDataToSequenceFile;
 
 public class TestDriver {
@@ -19,6 +20,9 @@ public class TestDriver {
       break;
     case "n2sf":
       NewsDataToSequenceFile.main(new String[] { args[1] });
+      break;
+    case "t2mf":
+      TwitterDataToMalletData.main(new String[] { args[1], args[2] });
       break;
     default:
       break;
