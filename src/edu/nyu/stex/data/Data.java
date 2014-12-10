@@ -15,12 +15,17 @@ public class Data {
   private String content;
   private HashMap<String, String> properties = new HashMap<String, String>();
   private HashMap<String, ArrayList<String>> listProperties = new HashMap<String, ArrayList<String>>();
-  
+
   public Data() {
+    content = null;
   };
 
   public String getContent() {
-    return content;
+    if (content == null) {
+      return rawContentToContent();
+    } else {
+      return content;
+    }
   }
 
   public HashMap<String, String> getProperties() {
@@ -51,10 +56,6 @@ public class Data {
     this.time = time;
   }
 
-  public void setContent(String content) {
-    this.content = content;
-  }
-
   public void setProperties(HashMap<String, String> properties) {
     this.properties = properties;
   }
@@ -63,11 +64,15 @@ public class Data {
     return listProperties;
   }
 
-  public void setListProperties(HashMap<String, ArrayList<String>> listProperties) {
+  public void setListProperties(
+      HashMap<String, ArrayList<String>> listProperties) {
     this.listProperties = listProperties;
   }
 
   public String getRawContent() {
+    if (rawContent == null) {
+
+    }
     return rawContent;
   }
 
@@ -75,12 +80,14 @@ public class Data {
     this.rawContent = rawContent;
   }
 
-  public void rawContentToContent() {
+  public String rawContentToContent() {
     List<String> terms = StandardStemming.stemToList(rawContent);
     StringBuilder sb = new StringBuilder();
-    for (String term:terms){
+    for (String term : terms) {
       sb.append(term).append(" ");
     }
-    setContent(sb.substring(0,sb.length()-1));
+    String c = sb.substring(0, sb.length() - 1);
+    content = c;
+    return c;
   }
 }

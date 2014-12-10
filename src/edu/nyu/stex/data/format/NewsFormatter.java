@@ -41,7 +41,6 @@ public class NewsFormatter {
     data.setPublisher(source);
     HashMap<String, String> properties = new HashMap<String, String>();
     data.setProperties(properties);
-    data.setContent(StandardStemming.stem(message.getTitle()));
     return data;
   }
 

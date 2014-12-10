@@ -12,6 +12,10 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.SequenceFile;
 import org.apache.hadoop.io.Text;
 
+import twitter4j.TwitterException;
+import twitter4j.TwitterObjectFactory;
+import edu.nyu.stex.data.preprocess.StandardStemming;
+
 public class TwitterDataToSequenceFiles {
   private static Path inputPath;
   private static Path outputPath;
@@ -20,7 +24,7 @@ public class TwitterDataToSequenceFiles {
   private static SequenceFile.Writer writer;
 
   @SuppressWarnings("deprecation")
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws IOException, TwitterException {
     inputPath = new Path(args[0]);
     outputPath = new Path(args[0].replaceFirst("rdb_data", "rdb_sequence_data")
         + "/sequence_data");
@@ -32,7 +36,8 @@ public class TwitterDataToSequenceFiles {
     writer.close();
   }
 
-  private static void cd(FileStatus[] status) throws IOException {
+  private static void cd(FileStatus[] status) throws IOException,
+      TwitterException {
     for (int i = 0; i < status.length; i++) {
       FileStatus fileStatus = status[i];
       if (fileStatus.isDirectory()) {
@@ -45,16 +50,16 @@ public class TwitterDataToSequenceFiles {
   }
 
   private static void generateSequenceFile(FileStatus fileStatus)
-      throws IOException {
+      throws IOException, TwitterException {
     BufferedReader br = new BufferedReader(new InputStreamReader(
         fs.open(fileStatus.getPath())));
     String line;
     int lineCount = 0;
     while ((line = br.readLine()) != null) {
-      writer.append(new Text(fileStatus.getPath().getName() + '.' + lineCount),
-          new Text(line));
+      String content = StandardStemming.stem(TwitterObjectFactory.createStatus(
+          line).getText());
+      writer.append(new Text(content + '.' + lineCount), new Text(line));
       lineCount++;
     }
   }
 }
-

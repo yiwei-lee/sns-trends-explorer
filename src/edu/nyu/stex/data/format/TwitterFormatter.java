@@ -12,7 +12,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 
 import edu.nyu.stex.data.Data;
-import edu.nyu.stex.data.preprocess.StandardStemming;
 
 public class TwitterFormatter {
   private static final Gson gson = new GsonBuilder().create();
@@ -54,7 +53,6 @@ public class TwitterFormatter {
     
     String content = status.getText();
     data.setRawContent(content);
-    data.setContent(StandardStemming.stem(content));
     return data;
   }
 

@@ -5,9 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StandardStemming {
-  
   public static String stem(String str) {
-    return str;
+    List<String> terms = stemToList(str);
+    StringBuilder sb = new StringBuilder();
+    for (String term : terms) {
+      sb.append(term).append(" ");
+    }
+    return sb.substring(0, sb.length() - 1);
   }
 
   public static List<String> stemToList(String str) {
