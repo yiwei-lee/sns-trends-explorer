@@ -28,27 +28,26 @@ public class NewsDataToSequenceFile {
   @SuppressWarnings("deprecation")
   public static void main(String[] args) throws IOException {
     inputPath = new Path(args[0]);
-    outputPath = new Path(args[0].replaceFirst("rdb_data", "rdb_sequence_data")
-            + "/sequence_data");
+    outputPath = new Path(args[0].replaceFirst("rdb_data", "rdb_sequence_data"));
     conf = new Configuration();
     fs = FileSystem.get(URI.create("hdfs://babar.es.its.nyu.edu:8020"), conf);
-    writer = new SequenceFile.Writer(fs, conf, outputPath, Text.class, Text.class);
+    writer = new SequenceFile.Writer(fs, conf, outputPath, Text.class,
+        Text.class);
     generateSequenceFile(inputPath);
     writer.close();
   }
 
-  private static void generateSequenceFile(Path inputPath)throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(inputPath)));
+  private static void generateSequenceFile(Path inputPath) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(
+        fs.open(inputPath)));
     String line;
     int lineCount = 0;
     while ((line = br.readLine()) != null) {
       Gson gson = new Gson();
-      Data data = gson.fromJson(line,Data.class);
+      Data data = gson.fromJson(line, Data.class);
       String content = data.getContent();
       if (!content.isEmpty()) {
-        writer.append(
-                new Text(String.valueOf(lineCount)),
-                new Text(content));
+        writer.append(new Text(String.valueOf(lineCount)), new Text(content));
       }
       lineCount++;
     }
