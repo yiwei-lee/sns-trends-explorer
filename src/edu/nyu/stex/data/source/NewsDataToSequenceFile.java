@@ -2,15 +2,11 @@ package edu.nyu.stex.data.source;
 
 import com.google.gson.Gson;
 import edu.nyu.stex.data.Data;
-import edu.nyu.stex.data.preprocess.StandardStemming;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.SequenceFile;
 import org.apache.hadoop.io.Text;
-import twitter4j.TwitterException;
-import twitter4j.TwitterObjectFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;

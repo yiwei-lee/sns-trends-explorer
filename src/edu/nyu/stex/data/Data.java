@@ -86,7 +86,7 @@ public class Data {
     for (String term : terms) {
       sb.append(term).append(" ");
     }
-    String c = sb.substring(0, sb.length() - 1);
+    String c = sb.toString();
     content = c;
     return c;
   }
