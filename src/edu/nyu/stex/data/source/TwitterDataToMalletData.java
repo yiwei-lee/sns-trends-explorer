@@ -27,8 +27,7 @@ public class TwitterDataToMalletData {
     inputPath = new Path(args[0]);
     conf = new Configuration();
     fs = FileSystem.get(URI.create("hdfs://babar.es.its.nyu.edu:8020"), conf);
-    BufferedWriter writer = new BufferedWriter(
-        new FileWriter(new File(args[1])));
+    writer = new BufferedWriter(new FileWriter(new File(args[1])));
     cd(fs.listStatus(inputPath));
     writer.close();
   }
@@ -40,12 +39,12 @@ public class TwitterDataToMalletData {
       if (fileStatus.isDirectory()) {
         cd(fs.listStatus(fileStatus.getPath()));
       } else {
-        generateSequenceFile(fileStatus);
+        generateMalletFile(fileStatus);
       }
     }
   }
 
-  private static void generateSequenceFile(FileStatus fileStatus)
+  private static void generateMalletFile(FileStatus fileStatus)
       throws IOException, TwitterException {
     BufferedReader br = new BufferedReader(new InputStreamReader(
         fs.open(fileStatus.getPath())));
