@@ -27,7 +27,7 @@ public class TweetsListener implements StatusListener {
         sb.append('\n');
         System.out.println(sb.toString());
 
-        Utility.WriteToFile(sb.toString(), "Tweets", true);
+        WriteFile.WriteToFile(sb.toString(), "Tweets", true);
     }
 
     @Override

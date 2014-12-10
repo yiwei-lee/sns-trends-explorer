@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 
-public class Utility {
+public class WriteFile {
 
     private static final String RESULT_FOLDER_NAME = "news";
     private static boolean stream = false;

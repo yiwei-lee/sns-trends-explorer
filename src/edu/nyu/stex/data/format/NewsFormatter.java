@@ -48,14 +48,15 @@ public class NewsFormatter {
     return gson.fromJson(parser.parse(new String(bytes)), Data.class);
   }
   public static Date toData(String string) {
-
+    Date last = Calendar.getInstance().getTime();
     try {
       DateFormat format = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
       Date date = format.parse(string);
+      last = date;
       return date;
     }catch (Exception e){
       System.err.print(e.toString());
-      return Calendar.getInstance().getTime();
+      return last;
     }
   }
 }

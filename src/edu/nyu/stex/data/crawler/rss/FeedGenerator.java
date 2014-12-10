@@ -2,7 +2,7 @@ package edu.nyu.stex.data.crawler.rss;
 
 import com.google.gson.Gson;
 import edu.nyu.stex.data.Data;
-import edu.nyu.stex.data.crawler.Utility;
+import edu.nyu.stex.data.crawler.WriteFile;
 import edu.nyu.stex.data.format.NewsFormatter;
 
 import java.io.*;
@@ -76,11 +76,11 @@ public class FeedGenerator extends TimerTask {
         if (feedCount==100){
           round ++;
           feedCount = 0;
-          Utility.WriteToFile(feedSB.toString(), outputFeed, true);
+          WriteFile.WriteToFile(feedSB.toString(), outputFeed, true);
           feedSB.setLength(0);
           System.out.println("Written in "+outputFeed);
           if (dataSB.length()>0){
-            Utility.WriteToFile(dataSB.toString(), outputData, true);
+            WriteFile.WriteToFile(dataSB.toString(), outputData, true);
             dataSB.setLength(0);
             System.out.println("Written in "+outputData);
           }
@@ -89,14 +89,14 @@ public class FeedGenerator extends TimerTask {
       System.out.println("Total "+(round*100+feedCount)+" feeds.");
       in.close();
 
-      Utility.WriteToFile(feedSB.substring(0,feedSB.length()-1), outputFeed, true);
+      WriteFile.WriteToFile(feedSB.substring(0, feedSB.length() - 1), outputFeed, true);
       if (dataSB.length()>0){
-        Utility.WriteToFile(dataSB.substring(0,dataSB.length()-1), outputData, true);
+        WriteFile.WriteToFile(dataSB.substring(0, dataSB.length() - 1), outputData, true);
         dataSB.setLength(0);
         System.out.println("Written in "+outputData);
       }
 
-      Utility.WriteToFile(gson.toJson(urlSet), urlSetPath, false);
+      WriteFile.WriteToFile(gson.toJson(urlSet), urlSetPath, false);
 
     }catch (Exception e){
       System.err.println(e.toString());
