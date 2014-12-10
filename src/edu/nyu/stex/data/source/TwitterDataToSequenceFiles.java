@@ -58,7 +58,9 @@ public class TwitterDataToSequenceFiles {
     while ((line = br.readLine()) != null) {
       String content = StandardStemming.stem(TwitterObjectFactory.createStatus(
           line).getText());
-      writer.append(new Text(content + '.' + lineCount), new Text(line));
+      if (!content.isEmpty()) {
+        writer.append(new Text(content + '.' + lineCount), new Text(line));
+      }
       lineCount++;
     }
   }
