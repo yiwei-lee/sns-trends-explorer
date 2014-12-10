@@ -3,6 +3,7 @@ package edu.nyu.stex;
 import java.io.IOException;
 
 import twitter4j.TwitterException;
+import edu.nyu.stex.data.source.NewsDataToSequenceFile;
 import edu.nyu.stex.data.source.TwitterDataToSequenceFile;
 
 public class TestDriver {
@@ -15,6 +16,9 @@ public class TestDriver {
     switch (args[0]) {
     case "t2sf":
       TwitterDataToSequenceFile.main(new String[] { args[1] });
+      break;
+    case "n2sf":
+      NewsDataToSequenceFile.main(new String[] { args[1] });
       break;
     default:
       break;
