@@ -12,6 +12,7 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.SequenceFile;
 import org.apache.hadoop.io.Text;
 
+import twitter4j.Status;
 import twitter4j.TwitterException;
 import twitter4j.TwitterObjectFactory;
 import edu.nyu.stex.data.preprocess.StandardStemming;
@@ -56,12 +57,19 @@ public class TwitterDataToSequenceFile {
     String line;
     int lineCount = 0;
     while ((line = br.readLine()) != null) {
-      String content = StandardStemming.stem(TwitterObjectFactory.createStatus(
-          line).getText());
-      if (!content.isEmpty()) {
+      // String content =
+      // StandardStemming.stem(TwitterObjectFactory.createStatus(
+      // line).getText());
+      // if (!content.isEmpty()) {
+      // writer.append(
+      // new Text(fileStatus.getPath().getName() + '.' + lineCount),
+      // new Text(content));
+      // }
+      Status status = TwitterObjectFactory.createStatus(line);
+      if (status.getLang().equals("en")) {
         writer.append(
             new Text(fileStatus.getPath().getName() + '.' + lineCount),
-            new Text(content));
+            new Text(status.getText()));
       }
       lineCount++;
     }
