@@ -11,7 +11,7 @@ public class StandardStemming {
     for (String term : terms) {
       sb.append(term).append(" ");
     }
-    return sb.substring(0, sb.length() - 1);
+    return sb.toString();
   }
 
   public static List<String> stemToList(String str) {
