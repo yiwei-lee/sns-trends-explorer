@@ -54,7 +54,8 @@ public class TwitterDataToMalletData {
       Status status = TwitterObjectFactory.createStatus(line);
       if (status.getLang().equals("en")) {
         writer.write(fileStatus.getPath().getName() + '.' + lineCount + " X "
-            + status.getText());
+            + status.getText().replaceAll("\n", " "));
+        writer.newLine();
       }
       lineCount++;
     }
