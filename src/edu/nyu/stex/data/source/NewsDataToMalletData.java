@@ -15,6 +15,8 @@ import java.util.*;
  */
 public class NewsDataToMalletData {
   public static void main(String[] args) throws IOException {
+    long start = System.currentTimeMillis();
+
     String myDirectoryPath = "news/feed";
     File dir = new File(myDirectoryPath);
     FilenameFilter filenameFilter = new FilenameFilter() {
@@ -28,9 +30,14 @@ public class NewsDataToMalletData {
       System.out.println("Process file: "+input.toString());
       filter(input);
     }
+
     File inputPath = new File("news/midr/data.txt");
     read(inputPath);
 
+    long elapsedTime = System.currentTimeMillis() - start;
+    int min = (int) elapsedTime / (60 * 1000);
+    int sec = (int) (elapsedTime - min * (60 * 1000)) / 1000;
+    System.out.println("Total time: " + min + " min " + sec + " sec.");
   }
 
   public static void read(File inputPath) throws IOException {
@@ -40,19 +47,35 @@ public class NewsDataToMalletData {
     BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(inputPath)));
     String s;
     int count = 0;
+    Queue<Data> dataQueue = new PriorityQueue<Data>(new Comparator<Data>() {
+      @Override
+      public int compare(Data o1, Data o2) {
+        return o1.getTime().compareTo(o2.getTime());
+      }
+    });
     while ((s = in.readLine()) != null) {
-      count ++;
       Data data = gson.fromJson(s,Data.class);
+      dataQueue.add(data);
+    }
+    Date time = new Date();
+    while (!dataQueue.isEmpty()){
+      count ++;
+      Data data = dataQueue.poll();
+      time = data.getTime();
+      if (count==1){
+        System.out.println(time);
+      }
       sb.append(count+" X "+data.getRawContent()).append('\n');
     }
-    WriteFile.WriteToFile(sb.toString(),"midr/trim.txt",true);
+    System.out.println(time);
+    WriteFile.WriteToFile(sb.toString(),"midr/trim.txt",false);
   }
 
   public static void filter(File inputPath) throws FileNotFoundException {
     int round = 0, count = 0;
     int dupCount = 0, idCount = 0;
     Boolean finish = false;
-    long start = System.currentTimeMillis();
+
 
     String outputPath = "midr/data.txt";
     String urlSetPath = "midr/urlSet.json";
@@ -105,10 +128,6 @@ public class NewsDataToMalletData {
         System.out.println("Identical:  " + idCount + ", Duplicate: " + dupCount);
         WriteFile.WriteToFile(gson.toJson(urlSet), urlSetPath, false);
 
-        long elapsedTime = System.currentTimeMillis() - start;
-        int min = (int) elapsedTime / (60 * 1000);
-        int sec = (int) (elapsedTime - min * (60 * 1000)) / 1000;
-        System.out.println("Total time: " + min + " min " + sec + " sec.");
       } catch (Exception e) {
         System.err.println("Corpus line " + (round * 100 + count + 1));
         System.err.println(e.toString());
