@@ -1,3 +1,4 @@
+/**try to infer topic for new document**/
 package edu.nyu.stex.cluster;
 
 import java.io.IOException;

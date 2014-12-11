@@ -1,3 +1,4 @@
+/**draw graph using JFreeChart**/
 package edu.nyu.stex.analyzer;
 
 import java.io.File;

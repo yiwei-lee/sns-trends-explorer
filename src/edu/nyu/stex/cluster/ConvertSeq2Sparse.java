@@ -1,3 +1,4 @@
+/**convert sequence file to vectors for processing**/
 package edu.nyu.stex.cluster;
 
 import java.io.BufferedReader;

@@ -1,3 +1,5 @@
+/**run LDA algorithm on cluster, batch of jobs**/
+
 package edu.nyu.stex.cluster;
 
 import java.io.IOException;

@@ -1,3 +1,4 @@
+/**test file for mahout running on cluster**/
 package edu.nyu.stex.cluster;
 
 import java.io.File;
