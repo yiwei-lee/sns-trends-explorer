@@ -37,7 +37,7 @@ public class NewsFormatter {
     // Populate data fields;
     data.setSource("rss");
     data.setTime(toData(message.getPubDate()));
-    data.setRawContent(message.getTitle()+message.getDescription());
+    data.setRawContent(message.getTitle()+'\t'+message.getDescription());
     data.setPublisher(source);
     HashMap<String, String> properties = new HashMap<String, String>();
     data.setProperties(properties);
