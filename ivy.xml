@@ -35,5 +35,8 @@
        <dependency org="org.apache.flume" name="flume-ng-sdk" rev="1.5.2"/>
        <dependency org="org.apache.flume" name="flume-ng-configuration" rev="1.5.2"/>
        <dependency org="org.apache.spark" name="spark-core_2.10" rev="1.1.1"/>
+       <dependency org="org.jfree" name="jfreechart" rev="1.0.19"/>
+       <dependency org="org.apache.mahout" name="mahout-integration" rev="0.9"/>
+       <dependency org="org.apache.mahout" name="mahout-core" rev="0.9"/>
 	</dependencies>
 </ivy-module>

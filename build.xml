@@ -11,8 +11,12 @@
 	<manifestclasspath property="lib.list" jarfile="dist/SteX.jar">
 		<classpath refid="classpath" />
 	</manifestclasspath>
-
-	<target name="init">
+  
+  <target name="resolve" description="--> retrieve dependencies with ivy">
+    <ivy:retrieve sync="true"/>
+  </target>
+	
+	<target name="init" depends="resolve">
 		<!-- Create the time stamp -->
 		<tstamp />
 		<!-- Create the build directory structure used by compile -->

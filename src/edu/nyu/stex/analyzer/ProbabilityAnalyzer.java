@@ -1,3 +1,5 @@
+package edu.nyu.stex.analyzer;
+
 import java.io.IOException;
 import java.util.*;
 import java.io.File;

@@ -1,4 +1,4 @@
-package edu.nyu.stex.lda;
+package edu.nyu.stex.cluster;
 
 import java.io.IOException;
 import java.util.ArrayList;

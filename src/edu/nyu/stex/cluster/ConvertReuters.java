@@ -1,4 +1,5 @@
-package edu.nyu.stex.lda;
+package edu.nyu.stex.cluster;
+
 import java.io.File;
 
 import org.apache.mahout.text.SequenceFilesFromDirectory;
