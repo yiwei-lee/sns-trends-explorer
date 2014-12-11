@@ -1,0 +1,14 @@
+body {
+	padding-bottom: 70px;
+	background-color: white;
+}
+iframe[seamless]{
+    background-color: white;
+    border: 0px none transparent;
+    padding: 0px;
+    overflow: hidden;
+    display:block;
+}
+navbar div {
+	background-color: blue;
+}

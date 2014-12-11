@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SteX</title>
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="main.css">
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("#tabBtn1").click();
+				$(iframe).each(function(){
+					resizeFrame($(this));
+				})
+			})
+			function resizeFrame(f) {
+				f.style.height = f.contentWindow.document.body.scrollHeight + "px";
+			}
+		</script>
+	</head>
+	<body>
+		<div data-role="header">
+			<h1> Welcome to SteX! </h1>
+		</div>
+		<div role="main" class="ui-content">
+			<div data-role="tabs" id="tabs">
+				<div data-role="navbar">
+					<ul>
+						<li><a id="tabBtn1" href="#fragment-1">Twitter</a></li>
+						<li><a id="tabBtn2" href="#fragment-2">RSS Feeds</a></li>
+						<li><a id="tabBtn3" href="#fragment-3">General</a></li>
+					</ul>
+				</div>
+				<div id="fragment-1">
+					<p style="margin:0"><iframe src="twitter_column.htm" width="100%" height="500px" seamless></iframe></p>
+					<p style="margin:0"><iframe src="twitter_time.htm" width="100%" height="800px" seamless style="margin-left:auto;"></iframe></p>
+				</div>
+				<div id="fragment-2">
+					<p style="margin:0"><iframe src="news_column.htm" width="100%" height="500px" seamless></iframe></p>
+					<p style="margin:0"><iframe src="news_time.htm" width="100%" height="800px" seamless></iframe></p>
+				</div>
+				<div id="fragment-3">
+					<p> Nothing here...yet! </p>
+				</div>
+			</div>
+		</div>
+		<div data-role="footer" data-position="fixed">
+			<h4>From Yunzhe Jia, Siyuan Yao, Yiwei Li and Daran Zhang</h4>
+		</div>
+		<script type="text/javascript">
+		</script>
+	</body>
+</html>
